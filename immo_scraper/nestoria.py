@@ -1,4 +1,4 @@
-"""Scraping real estate API."""
+"""Scraping Nestoria API."""
 
 from typing import Dict, List
 
