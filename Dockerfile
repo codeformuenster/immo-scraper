@@ -15,5 +15,6 @@ RUN apk --no-cache add --virtual build-env \
   && apk del build-env
 
 COPY ./scraper.py /usr/src/app
+COPY immo_scraper /usr/src/app/immo_scraper
 
 CMD ["python", "/usr/src/app/scraper.py"]

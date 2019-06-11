@@ -7,4 +7,3 @@ services:
       CITY: 'Muenster'
       ESTATE_TYPE: 'Haus'
       RENT_TYPE: 'Kauf'
-
