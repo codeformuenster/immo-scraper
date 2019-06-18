@@ -1,3 +1,6 @@
+# secrets
+/secret
+
 # python
 *.pyc
 __pycache__
