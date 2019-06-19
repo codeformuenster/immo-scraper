@@ -1,6 +1,7 @@
 # python
 *.pyc
 __pycache__
+/XDG_CACHE_HOME
 
 # editors
 .idea
