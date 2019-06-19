@@ -1,3 +1,6 @@
+secret/.gitkeep
+secret/bucket.txt
+
 # python
 *.pyc
 __pycache__
