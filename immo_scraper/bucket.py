@@ -6,6 +6,7 @@ from typing import Text
 import boto3
 
 BUCKET_NAME = "codeformuenster"
+BUCKET_FOLDER = "immoscout/"
 
 
 def read_credentials():
@@ -39,5 +40,5 @@ def print_bucket_files():
 
 def write_to_s3(filename: Text, content: Text):
     bucket = get_bucket()
-    key = "immoscout/" + filename
+    key = BUCKET_FOLDER + filename
     bucket.put_object(Bucket=BUCKET_NAME, Body=content, Key=key)
