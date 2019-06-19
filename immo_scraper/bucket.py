@@ -1,4 +1,3 @@
-
 """ Utils to interact with s3 bucket. """
 
 from typing import Text
@@ -7,10 +6,12 @@ import boto3
 
 BUCKET_NAME = "codeformuenster"
 BUCKET_FOLDER = "immoscout/"
+BUCKET_REGION = "fr-par"
+CREDENTIALS_PATH = "secret/bucket.txt"
 
 
-def read_credentials():
-    with open("secret/bucket.txt", "r") as f:
+def read_credentials() -> (Text, Text, Text):
+    with open(CREDENTIALS_PATH, "r") as f:
         creds = f.read().split("\n")
         BUCKET_URL = creds[0]
         BUCKET_SECRET = creds[1]
@@ -20,7 +21,7 @@ def read_credentials():
 
 def get_bucket():
     BUCKET_URL, BUCKET_SECRET, BUCKET_ID = read_credentials()
-    session = boto3.Session(region_name="fr-par")
+    session = boto3.Session(region_name=BUCKET_REGION)
     s3 = session.resource(
         service_name="s3",
         endpoint_url=BUCKET_URL,
