@@ -1,3 +1,8 @@
+
+""" Utils to interact with s3 bucket. """
+
+from typing import Text
+
 import boto3
 
 BUCKET_NAME = "codeformuenster"
@@ -32,7 +37,7 @@ def print_bucket_files():
         print(f"key: {key}")
 
 
-def write_to_s3(filename, content):
+def write_to_s3(filename: Text, content: Text):
     bucket = get_bucket()
     key = "immoscout/" + filename
     bucket.put_object(Bucket=BUCKET_NAME, Body=content, Key=key)
