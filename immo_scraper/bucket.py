@@ -32,7 +32,7 @@ def get_bucket():
     return bucket
 
 
-def print_bucket_files():
+def print_bucket_contents():
     bucket = get_bucket()
     for obj in bucket.objects.all():
         key = obj.key
