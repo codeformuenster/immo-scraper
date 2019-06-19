@@ -21,5 +21,7 @@ nestoria_result = nestoria.scrape()
 log.info("Scraping done.")
 
 # save to S3 bucket
+log.info("Writing to s3 bucket...")
 timestamp = str(datetime.utcnow()) + ".txt"
 write_to_s3(filename=timestamp, content=nestoria_result)
+log.info("Writing done.")
