@@ -1,32 +1,35 @@
 """ Utils to interact with s3 bucket. """
 
+import re
 from typing import Text
 
 import boto3
 
+# s3 bucket
+BUCKET_URL = "https://s3.fr-par.scw.cloud"
 BUCKET_NAME = "codeformuenster"
-BUCKET_FOLDER = "immoscout/"
+BUCKET_KEY_ID = "SCWXCS9VG5RY2DBM8RRQ"
 BUCKET_REGION = "fr-par"
+BUCKET_FOLDER = "immoscout/"
+# path to credentials
 CREDENTIALS_PATH = "secret/bucket.txt"
 
 
-def read_credentials() -> (Text, Text, Text):
+def read_credentials() -> Text:
     with open(CREDENTIALS_PATH, "r") as f:
-        creds = f.read().split("\n")
-        BUCKET_URL = creds[0]
-        BUCKET_SECRET = creds[1]
-        BUCKET_ID = creds[2]
-    return BUCKET_URL, BUCKET_SECRET, BUCKET_ID
+        secret_key = f.read()
+        secret_key_clean = re.sub("[^a-z0-9\\-]", "", secret_key)
+    return secret_key_clean
 
 
 def get_bucket():
-    BUCKET_URL, BUCKET_SECRET, BUCKET_ID = read_credentials()
+    BUCKET_SECRET_KEY = read_credentials()
     session = boto3.Session(region_name=BUCKET_REGION)
     s3 = session.resource(
         service_name="s3",
         endpoint_url=BUCKET_URL,
-        aws_access_key_id=BUCKET_ID,
-        aws_secret_access_key=BUCKET_SECRET,
+        aws_access_key_id=BUCKET_KEY_ID,
+        aws_secret_access_key=BUCKET_SECRET_KEY,
     )
     bucket = s3.Bucket(BUCKET_NAME)
     return bucket
