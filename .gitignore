@@ -9,3 +9,4 @@ __pycache__
 .idea
 .vscode
 /XDG_CACHE_HOME
+.devcontainer.json
