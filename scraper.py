@@ -2,9 +2,11 @@
 
 import logging
 import sys
+from datetime import datetime
 
 sys.path.append(".")
 from immo_scraper import nestoria  # noqa: E402
+from immo_scraper.bucket import write_to_s3  # noqa: E402
 
 # set up logging
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
@@ -19,4 +21,7 @@ nestoria_result = nestoria.scrape()
 log.info("Scraping done.")
 
 # save to S3 bucket
-# TODO
+log.info("Writing to s3 bucket...")
+timestamp = str(datetime.utcnow()) + ".txt"
+write_to_s3(filename=timestamp, content=str(nestoria_result))
+log.info("Writing done.")
