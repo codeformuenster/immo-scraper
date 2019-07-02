@@ -1,21 +1,38 @@
 """Scraping Nestoria API."""
 
 from typing import Dict, List
+import threading
 
 import requests
 from toolz import pipe
 from toolz.curried import map
 
-URL = (
-    "https://api.nestoria.de/api?"
-    "encoding=json&"
-    "pretty=1&"
-    "action=search_listings&"
-    "listing_type=buy&"
-    "place_name=muenster&"
-    "sort=newest"
-)
+from time import sleep
+import json
+from kafka import KafkaProducer
+import logging
+logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
+KAFKA_URI = 'kafka:9092'
+NESTORIA_TOPIC = 'nestoria_event'
+
+producer = KafkaProducer(
+        bootstrap_servers=[KAFKA_URI],
+        value_serializer=lambda x: json.dumps(x).encode('utf-8')
+        )
+
+URL = (
+        "https://api.nestoria.de/api?"
+        "encoding=json&"
+        "pretty=1&"
+        "number_of_results=50&"
+        "action=search_listings&"
+        "listing_type=rent&"
+        "property_type=house&"
+        "centre_point=52.1762719,7.7579568,50km&"
+        "sort=newest"
+        )
 
 def scrape() -> List[Dict]:
     """
@@ -30,9 +47,31 @@ def scrape() -> List[Dict]:
 
     return listings
 
+def transform_listing(listing):
+    listing['date_of_listing'] = add_date_of_listing(listing)
+    listing = remove_unwanted_keys(listing)
+
+
+def remove_unwanted_keys(listing):
+    unwanted_keys = ['updated_in_days', 'updated_in_days_formatted']
+    return {key: value for key, value in listing.items() if key not in unwanted_keys}
+
+def add_date_of_listing(listing):
+    day = listing['updated_in_days']
+    date_today = datetime.datetime.now().date()
+    delta = datetime.timedelta(day)
+    date_of_listing = (date_today - delta).isoformat()
+
+    return date_of_listing
+
+def send_event(event):
+    print('sending ' + str(len(event)) + ' listings')
+    producer.send(topic=NESTORIA_TOPIC, value=event, partition=0)
+
 
 if __name__ == "__main__":
-    # scrape listings
-    response = scrape()
-    # print results
-    pipe(response, map(str), list, print)
+    while True:
+        response = scrape()
+        cleansed_response = list(map(transform_listing, response))
+        send_event(cleansed_response)
+        sleep(60)

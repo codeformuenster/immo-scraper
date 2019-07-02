@@ -7,3 +7,9 @@ services:
       CITY: 'Muenster'
       ESTATE_TYPE: 'Haus'
       RENT_TYPE: 'Kauf'
+    networks:
+      kafka:
+networks:
+  kafka:
+    external: true
+    name: kafka-stack-docker-compose_kafka
