@@ -1,3 +1,4 @@
+# TODO: move consumer logic to separate  project
 
 import hashlib
 import json

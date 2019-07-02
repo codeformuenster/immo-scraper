@@ -16,10 +16,6 @@ logging.basicConfig(level=logging.INFO)
 KAFKA_URI = "kafka:9092"
 NESTORIA_TOPIC = "nestoria_event"
 
-producer = KafkaProducer(
-    bootstrap_servers=[KAFKA_URI],
-    value_serializer=lambda x: json.dumps(x).encode("utf-8"),
-)
 
 URL = (
     "https://api.nestoria.de/api?"
@@ -69,11 +65,20 @@ def add_date_of_listing(listing):
     return date_of_listing
 
 
+# TODO: move to serparate place
+producer = KafkaProducer(
+    bootstrap_servers=[KAFKA_URI],
+    value_serializer=lambda x: json.dumps(x).encode("utf-8"),
+)
+
+
+# TODO: move to serparate place
 def send_event(event):
     print("sending " + str(len(event)) + " listings")
     producer.send(topic=NESTORIA_TOPIC, value=event, partition=0)
 
 
+# TODO: move to serparate place
 if __name__ == "__main__":
     while True:
         response = scrape()
