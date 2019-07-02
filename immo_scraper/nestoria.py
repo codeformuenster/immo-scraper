@@ -3,6 +3,8 @@
 from typing import Dict, List
 import threading
 
+import datetime
+
 import requests
 from toolz import pipe
 from toolz.curried import map
@@ -50,6 +52,8 @@ def scrape() -> List[Dict]:
 def transform_listing(listing):
     listing['date_of_listing'] = add_date_of_listing(listing)
     listing = remove_unwanted_keys(listing)
+
+    return listing
 
 
 def remove_unwanted_keys(listing):

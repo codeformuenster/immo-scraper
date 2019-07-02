@@ -41,9 +41,10 @@ def generate_filename(listing):
     # return today + '_' + listing_id + '_' + listing_hash + '.json'
     return listing_id + '_' + listing_hash + '.json'
 
-def write_listings_to_disk(filename, listings):
+def write_listings_to_disk(listings):
     for listing in listings:
         print(listing)
+        filename = generate_filename(listing)
         with open(filename, 'w') as f:
             print('writing ' + filename)
             json.dump(listing, f, indent=4)
@@ -55,5 +56,5 @@ if __name__ == "__main__":
     for message in consumer:
         listings = message.value
         filename = generate_filename(listing)
-        add_timestamp_to_listings(listings)
-        write_listings_to_disk(filename, listings)
+        # add_timestamp_to_listings(listings)
+        write_listings_to_disk(listings)
