@@ -12,5 +12,6 @@ RUN apt-get update && \
 
 COPY ./scraper.py /usr/src/app
 COPY immo_scraper /usr/src/app/immo_scraper
+COPY secret /usr/src/app/secret
 
 CMD ["python", "/usr/src/app/scraper.py"]
