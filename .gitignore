@@ -5,6 +5,7 @@ secret/bucket.txt
 # python
 *.pyc
 __pycache__
+.mypy_cache
 
 # editors
 .idea

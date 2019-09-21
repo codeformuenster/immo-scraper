@@ -25,7 +25,7 @@ def scrape() -> List[Dict]:
     r = requests.get(URL)
     assert r.status_code == 200, "Status is not 200!"
 
-    listings = r.json()["response"]["listings"]
+    listings: List[Dict] = r.json()["response"]["listings"]
     assert len(listings) > 0, "No listings in reponse!"
 
     return listings
