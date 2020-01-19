@@ -13,12 +13,11 @@ setup(
     scripts=glob("bin/*"),
     # dependencies
     install_requires=[
-        "beautifulsoup4~=4.7.1",
+        "beautifulsoup4",
         "boto3",
-        "kafka-python~=1.4.6",
-        "requests~=2.22.0",
-        "scrapy~=1.6.0",
-        "toolz~=0.9.0",
+        "requests",
+        "scrapy",
+        "toolz",
     ],
     extras_require={
         "dev": ["black", "jupyter", "m2r", "pylama", "rope", "Sphinx", "sphinx_rtd_theme"],

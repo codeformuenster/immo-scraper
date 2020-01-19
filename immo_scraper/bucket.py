@@ -22,7 +22,7 @@ def read_credentials() -> Text:
     return secret_key_clean
 
 
-def get_bucket() -> boto3.s3.Bucket:
+def get_bucket():
     BUCKET_SECRET_KEY = read_credentials()
     session = boto3.Session(region_name=BUCKET_REGION)
     s3 = session.resource(
