@@ -3,21 +3,15 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name="pest_pi",
-    version="1.1.1",
-    author="Thorben Jensen",
-    author_email="jensen.thorben@gmail.com",
+    name="immo_scraper",
+    version="1.2.1",
+    # about
     license="MIT",
-    description=("Pest monitoring with Raspberry Pi."),
-    keywords="raspberry pi tensorflow",
-    url="https://github.com/thorbenJensen/pest-pi",
+    url="https://github.com/codeformuenster/immo-scout",
+    # source
     packages=find_packages(),
     scripts=glob("bin/*"),
-    classifiers=[
-        "Development Status :: 3 - Alpha",
-        "Topic :: Utilities",
-        "License :: OSI Approved :: MIT License",
-    ],
+    # dependencies
     install_requires=[
         "beautifulsoup4~=4.7.1",
         "boto3",
