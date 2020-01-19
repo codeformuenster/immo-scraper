@@ -6,6 +6,8 @@ secret/bucket.txt
 *.pyc
 __pycache__
 .mypy_cache
+/env/
+*.egg-info
 
 # editors
 .idea
