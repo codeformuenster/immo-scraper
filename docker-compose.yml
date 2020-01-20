@@ -3,5 +3,5 @@ services:
   scrape:
     build: .
     command: python bin/scrape_to_bucket
-    env_file:
-      - secret/bucket.env
+    volumes:
+      - ./secret:/usr/src/app/secret

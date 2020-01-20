@@ -1,6 +1,6 @@
 """ Utils to interact with s3 bucket. """
 
-import os
+import re
 from typing import Text
 
 import boto3
@@ -16,7 +16,10 @@ CREDENTIALS_PATH = "secret/bucket.txt"
 
 
 def read_credentials() -> Text:
-    return os.environ["SECRET_KEY"]
+    with open(CREDENTIALS_PATH, "r") as f:
+        secret_key = f.read()
+        secret_key_clean = re.sub("[^a-z0-9\\-]", "", secret_key)
+    return secret_key_clean
 
 
 def get_bucket():
