@@ -12,14 +12,16 @@ setup(
     packages=find_packages(),
     scripts=glob("bin/*"),
     # dependencies
-    install_requires=[
-        "beautifulsoup4",
-        "boto3",
-        "requests",
-        "scrapy",
-        "toolz",
-    ],
+    install_requires=["beautifulsoup4", "boto3", "requests", "scrapy", "toolz",],
     extras_require={
-        "dev": ["black", "jupyter", "m2r", "pylama", "rope", "Sphinx", "sphinx_rtd_theme"],
+        "dev": [
+            "black",
+            "jupyter",
+            "m2r",
+            "pylama",
+            "rope",
+            "Sphinx",
+            "sphinx_rtd_theme",
+        ],
     },
 )

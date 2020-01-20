@@ -5,9 +5,8 @@ import logging
 import sys
 from datetime import datetime
 
-sys.path.append(".")
-from immo_scraper import nestoria  # noqa: E402
-from immo_scraper.bucket import write_to_s3  # noqa: E402
+from immo_scraper import nestoria
+from immo_scraper.bucket import write_to_s3
 
 # set up logging
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
