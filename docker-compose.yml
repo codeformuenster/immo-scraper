@@ -1,9 +1,5 @@
 version: "2.2"
 services:
-  scraper:
+  scrape:
     build: .
-    environment:
-      STATE: 'Nordrhein-Westfalen'
-      CITY: 'Muenster'
-      ESTATE_TYPE: 'Haus'
-      RENT_TYPE: 'Kauf'
+    command: python bin/scrape_to_bucket
