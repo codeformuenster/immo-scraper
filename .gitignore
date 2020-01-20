@@ -1,6 +1,5 @@
 # secrets
-secret/.gitkeep
-secret/bucket.txt
+secret/*
 
 # python
 *.pyc
