@@ -22,7 +22,7 @@ def read_credentials() -> Text:
     return secret_key_clean
 
 
-def get_bucket():
+def get_bucket() -> boto3.s3.Bucket:
     BUCKET_SECRET_KEY = read_credentials()
     session = boto3.Session(region_name=BUCKET_REGION)
     s3 = session.resource(
@@ -35,14 +35,14 @@ def get_bucket():
     return bucket
 
 
-def print_bucket_contents():
+def print_bucket_contents() -> None:
     bucket = get_bucket()
     for obj in bucket.objects.all():
         key = obj.key
         print(f"key: {key}")
 
 
-def write_to_s3(filename: Text, content: Text):
+def write_to_s3(filename: Text, content: Text) -> None:
     bucket = get_bucket()
     key = BUCKET_FOLDER + filename
     bucket.put_object(Bucket=BUCKET_NAME, Body=content, Key=key)
