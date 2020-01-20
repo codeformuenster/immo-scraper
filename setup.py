@@ -1,7 +1,6 @@
 from glob import glob
 from setuptools import setup, find_packages
 
-
 setup(
     name="immo_scraper",
     version="0.4.0",
