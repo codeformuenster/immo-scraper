@@ -4,15 +4,38 @@ import re
 from typing import Text
 
 import boto3
+from botocore.client import Config
+
 
 # s3 bucket
 BUCKET_URL = "https://s3.fr-par.scw.cloud"
-BUCKET_NAME = "codeformuenster"
+BUCKET_NAME = "immo-scraper"
 BUCKET_KEY_ID = "SCWXCS9VG5RY2DBM8RRQ"
 BUCKET_REGION = "fr-par"
-BUCKET_FOLDER = "immoscout/"
+BUCKET_FOLDER = "nestoria/"
 # path to credentials
 CREDENTIALS_PATH = "secret/bucket.txt"
+
+
+def get_bucket():
+    """Connect to S3 bucket"""
+    ACCESS_KEY = "GOOGCUKVXASYVZCKAANOB4OR"
+    SECRET_KEY = open("secret/gs_secret_key.txt", "r").read()
+
+    session = boto3.Session(
+        aws_access_key_id=ACCESS_KEY,
+        aws_secret_access_key=SECRET_KEY,
+        region_name="US-CENTRAL1",
+    )
+
+    s3 = session.resource(
+        "s3",
+        endpoint_url="https://storage.googleapis.com",
+        config=Config(signature_version="s3v4"),
+    )
+
+    bucket = s3.Bucket("immo-scraper")
+    return bucket
 
 
 def read_credentials() -> Text:
@@ -20,19 +43,6 @@ def read_credentials() -> Text:
         secret_key = f.read()
         secret_key_clean = re.sub("[^a-z0-9\\-]", "", secret_key)
     return secret_key_clean
-
-
-def get_bucket():
-    BUCKET_SECRET_KEY = read_credentials()
-    session = boto3.Session(region_name=BUCKET_REGION)
-    s3 = session.resource(
-        service_name="s3",
-        endpoint_url=BUCKET_URL,
-        aws_access_key_id=BUCKET_KEY_ID,
-        aws_secret_access_key=BUCKET_SECRET_KEY,
-    )
-    bucket = s3.Bucket(BUCKET_NAME)
-    return bucket
 
 
 def print_bucket_contents() -> None:

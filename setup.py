@@ -11,7 +11,14 @@ setup(
     packages=find_packages(),
     scripts=glob("bin/*"),
     # dependencies
-    install_requires=["beautifulsoup4", "boto3", "requests", "scrapy", "toolz",],
+    install_requires=[
+        "beautifulsoup4",
+        "boto3",
+        "docutils~=0.15.2",
+        "requests",
+        "scrapy",
+        "toolz",
+    ],
     extras_require={
         "dev": [
             "black",
