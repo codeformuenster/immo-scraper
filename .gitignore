@@ -1,11 +1,12 @@
 # secrets
-secret/.gitkeep
-secret/bucket.txt
+secret/*
 
 # python
 *.pyc
 __pycache__
 .mypy_cache
+/env/
+*.egg-info
 
 # editors
 .idea
