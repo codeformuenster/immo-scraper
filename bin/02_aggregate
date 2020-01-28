@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+""" Aggregate previously scraped data. """
+
+# read all scraped data from bucket
+# TODO
+
+# filter out duplicates
+# TODO
+
+# assure/parse same schema
+# TODO
+
+# sum up data into data.frame
+# TODO
+
+# derive features
+# TODO
+
+# write result to bucket
+# TODO
+
