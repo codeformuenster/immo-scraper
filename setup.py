@@ -15,6 +15,7 @@ setup(
         "beautifulsoup4",
         "boto3",
         "docutils~=0.15.2",
+        "pandas",
         "requests",
         "scrapy",
         "toolz",

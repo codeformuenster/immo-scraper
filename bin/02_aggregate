@@ -1,21 +1,28 @@
 #!/usr/bin/env python
 """ Aggregate previously scraped data. """
+import itertools
+import json
+from pathlib import Path
+
+import pandas as pd
+
+# paths
+BUCKET_NESTORIA = Path("bucket/nestoria/")
+BUCKET_AGGREGATED = Path("bucket/processed/aggregated.csv")
 
 # read all scraped data from bucket
-# TODO
+filenames = [str(key) for key in BUCKET_NESTORIA.glob("*")]
+filedata = [json.loads(open(filename, "r").read()) for filename in filenames]
 
-# filter out duplicates
-# TODO
+entries_dicts = list(itertools.chain(*filedata))
 
-# assure/parse same schema
-# TODO
+df = pd.DataFrame(entries_dicts).drop_duplicates()  # filter out duplicates
 
-# sum up data into data.frame
-# TODO
-
-# derive features
-# TODO
+# FEATURES
+# geo-coordinates
+df["long_lat"] = df.apply(
+    lambda row: f"{row.latitude: .3f} {row.longitude: .3f}", axis=1
+)
 
 # write result to bucket
-# TODO
-
+df.to_csv(str(BUCKET_AGGREGATED))
