@@ -1,0 +1,56 @@
+#!/usr/bin/env python
+import os
+from pathlib import Path
+
+import pandas as pd
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
+CSV_AGGREGATED = Path("bucket/processed/aggregated.csv")
+ALERTS_IDS = Path("bucket/processed/alerts_ids.txt")
+# read secrets
+SENDGRID_TOKEN = open("secret/sendgrid_token.txt", "r").read()
+FROM_EMAIL = open("secret/from_email.txt", "r").read()
+TO_EMAIL = open("secret/to_email.txt", "r").read()
+
+# read aggregated data from bucket
+df_entries = pd.read_csv(str(CSV_AGGREGATED), dtype={"id": str})
+
+# check for new entries that are relevant to search criteria
+df_relevant = (
+    df_entries.query("bedroom_number >= 5")
+    .query("price <= 400000")
+    .query("size >= 100")
+    .query("latitude < 52")
+)
+
+# read log of historical alerts
+alerts_log = []
+if ALERTS_IDS.exists():
+    with open(str(ALERTS_IDS), "r") as f:
+        alerts_log = f.read().splitlines()
+
+# select entries for which alerts are due
+df_alert = df_relevant[~df_relevant.id.isin(alerts_log)]
+
+# send alerts
+for id in df_alert.id:
+    link = df_alert[df_alert.id == id].lister_url.values[0]
+    message = Mail(
+        from_email=FROM_EMAIL,
+        to_emails=TO_EMAIL,
+        subject='Immo-scraper: new relevant offer.',
+        html_content=f'Found new relevant <a href="{link}">offer</a>.')
+    try:
+        sg = SendGridAPIClient(SENDGRID_TOKEN)
+        response = sg.send(message)
+        print(response.status_code)
+        print(response.body)
+        print(response.headers)
+    except Exception as e:
+        print(e.message)
+
+# if alert sent, log this
+for id in df_alert.id:
+    with open(str(ALERTS_IDS), "a") as f:
+        f.write(id + "\n")
