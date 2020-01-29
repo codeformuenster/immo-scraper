@@ -17,6 +17,7 @@ setup(
         "docutils~=0.15.2",
         "pandas",
         "requests",
+        "sendgrid",
         "scrapy",
         "toolz",
     ],
