@@ -14,4 +14,3 @@ RUN pip install --no-cache-dir -r requirements.txt
 # project source
 COPY bin /usr/src/app/bin
 COPY immo_scraper /usr/src/app/immo_scraper
-

@@ -1,3 +1,6 @@
+# data
+bucket/
+
 # secrets
 secret/*
 

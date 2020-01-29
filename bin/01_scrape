@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """ Main script that executes all scrapers. """
+import json
 import logging
 import sys
 from datetime import datetime
@@ -20,5 +21,6 @@ log.info("Scraping done.")
 # save to S3 bucket
 log.info("Writing to s3 bucket...")
 timestamp = str(datetime.utcnow()) + ".txt"
-write_to_s3(filename=timestamp, content=str(nestoria_result))
+nestoria_json = json.dumps(nestoria_result, indent=2)
+write_to_s3(filename=timestamp, content=nestoria_json)
 log.info("Writing done.")
