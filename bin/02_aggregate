@@ -6,16 +6,16 @@ from pathlib import Path
 
 import pandas as pd
 
-# paths
+# paths to mounted bucket
 BUCKET_NESTORIA = Path("bucket/nestoria/")
 BUCKET_AGGREGATED = Path("bucket/processed/aggregated.csv")
 
-# read all scraped data from bucket
+# read raw data
 filenames = [str(key) for key in BUCKET_NESTORIA.glob("*")]
 filedata = [json.loads(open(filename, "r").read()) for filename in filenames]
 
+# format data
 entries_dicts = list(itertools.chain(*filedata))
-
 df = pd.DataFrame(entries_dicts).drop_duplicates()  # filter out duplicates
 
 # FEATURES
