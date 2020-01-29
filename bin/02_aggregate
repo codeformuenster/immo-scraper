@@ -12,15 +12,22 @@ BUCKET_AGGREGATED = Path("bucket/processed/aggregated.csv")
 
 # read raw data
 filenames = [str(key) for key in BUCKET_NESTORIA.glob("*")]
-filedata = [json.loads(open(filename, "r").read()) for filename in filenames]
+
+filedata = []
+for filename in filenames:
+    print(f"Reading file {filename}...")
+    with open(filename, "r") as f:
+        filedata.append(json.loads(f.read()))
 
 # format data
 entries_dicts = list(itertools.chain(*filedata))
 df = pd.DataFrame(entries_dicts).drop_duplicates()  # filter out duplicates
 
 # FEATURES
+# id of entry
+df["id"] = df.apply(lambda row: row.lister_url.split("/")[4], axis=1)
 # geo-coordinates
-df["long_lat"] = df.apply(
+df["lat_long"] = df.apply(
     lambda row: f"{row.latitude: .3f} {row.longitude: .3f}", axis=1
 )
 
