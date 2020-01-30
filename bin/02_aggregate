@@ -6,10 +6,14 @@ from pathlib import Path
 
 import pandas as pd
 
-from immo_scraper.io.paths import AGGREGATED_CSV, ALERTS_IDS, AGGREGATED_CSV
+from immo_scraper.io.paths import AGGREGATED_CSV, ALERTS_IDS, AGGREGATED_CSV, DIR_RAW
+from immo_scraper.io.bucket import download_raw_data_from_bucket
+
+# download raw data from bucket
+download_raw_data_from_bucket()
 
 # read raw data
-filenames = [str(key) for key in BUCKET_NESTORIA.glob("*")]
+filenames = [str(key) for key in DIR_RAW.glob("*") if key.name != ".gitkeep"]
 
 filedata = []
 for filename in filenames:
@@ -28,6 +32,8 @@ df["id"] = df.apply(lambda row: row.lister_url.split("/")[4], axis=1)
 df["lat_long"] = df.apply(
     lambda row: f"{row.latitude: .3f} {row.longitude: .3f}", axis=1
 )
+# time of scraping
+# TODO
 
 # write result to bucket
 df.to_csv(str(AGGREGATED_CSV))
