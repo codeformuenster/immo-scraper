@@ -8,10 +8,11 @@ from sendgrid.helpers.mail import Mail
 
 CSV_AGGREGATED = Path("bucket/processed/aggregated.csv")
 ALERTS_IDS = Path("bucket/processed/alerts_ids.txt")
-# read secrets
-SENDGRID_TOKEN = open("secret/sendgrid_token.txt", "r").read()
-FROM_EMAIL = open("secret/from_email.txt", "r").read()
-TO_EMAIL = open("secret/to_email.txt", "r").read()
+
+# read config
+SENDGRID_TOKEN = os.environ["SENDGRID_TOKEN"]
+FROM_EMAIL = os.environ["FROM_EMAIL"]
+TO_EMAIL = os.environ["TO_EMAIL"]
 
 # read aggregated data from bucket
 df_entries = pd.read_csv(str(CSV_AGGREGATED), dtype={"id": str})

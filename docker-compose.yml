@@ -3,5 +3,4 @@ services:
   scrape:
     build: .
     command: python bin/01_scrape
-    volumes:
-      - ./secret:/usr/src/app/secret
+    env_file: .env
