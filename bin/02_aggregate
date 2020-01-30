@@ -6,9 +6,7 @@ from pathlib import Path
 
 import pandas as pd
 
-# paths to mounted bucket
-BUCKET_NESTORIA = Path("bucket/nestoria/")
-BUCKET_AGGREGATED = Path("bucket/processed/aggregated.csv")
+from immo_scraper.paths import AGGREGATED_CSV, ALERTS_IDS, AGGREGATED_CSV
 
 # read raw data
 filenames = [str(key) for key in BUCKET_NESTORIA.glob("*")]
@@ -23,7 +21,7 @@ for filename in filenames:
 entries_dicts = list(itertools.chain(*filedata))
 df = pd.DataFrame(entries_dicts).drop_duplicates()  # filter out duplicates
 
-# FEATURES
+# ENGINEER FEATURES
 # id of entry
 df["id"] = df.apply(lambda row: row.lister_url.split("/")[4], axis=1)
 # geo-coordinates
@@ -32,4 +30,4 @@ df["lat_long"] = df.apply(
 )
 
 # write result to bucket
-df.to_csv(str(BUCKET_AGGREGATED))
+df.to_csv(str(AGGREGATED_CSV))

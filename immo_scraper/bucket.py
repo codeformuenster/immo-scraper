@@ -19,22 +19,17 @@ CREDENTIALS_PATH = "secret/bucket.txt"
 
 def get_bucket():
     """Connect to S3 bucket"""
-    ACCESS_KEY = os.environ["BUCKET_ACCESS_KEY"]
-    SECRET_KEY = os.environ["BUCKET_SECRET_KEY"]
-
     session = boto3.Session(
-        aws_access_key_id=ACCESS_KEY,
-        aws_secret_access_key=SECRET_KEY,
-        region_name="US-CENTRAL1",
+        aws_access_key_id=os.environ["BUCKET_ACCESS_KEY"],
+        aws_secret_access_key=os.environ["BUCKET_SECRET_KEY"],
+        region_name=os.environ["BUCKET_REGION_NAME"],
     )
-
     s3 = session.resource(
         "s3",
         endpoint_url="https://storage.googleapis.com",
         config=Config(signature_version="s3v4"),
     )
-
-    bucket = s3.Bucket("immo-scraper")
+    bucket = s3.Bucket(os.environ["BUCKET_NAME"])
     return bucket
 
 
