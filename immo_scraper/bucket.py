@@ -1,24 +1,19 @@
 """ Utils to interact with s3 bucket. """
 
 import os
-from typing import Text
+from typing import Text, List
 
 import boto3
 from botocore.client import Config
 
-
-# s3 bucket
-BUCKET_URL = "https://s3.fr-par.scw.cloud"
-BUCKET_NAME = "immo-scraper"
-BUCKET_KEY_ID = "SCWXCS9VG5RY2DBM8RRQ"
-BUCKET_REGION = "fr-par"
-BUCKET_FOLDER = "nestoria/"
-# path to credentials
-CREDENTIALS_PATH = "secret/bucket.txt"
+from immo_scraper.paths import BUCKET_FOLDER
 
 
-def get_bucket():
-    """Connect to S3 bucket"""
+def get_bucket() -> boto3.resources.factory.s3.Bucket:
+    """Get bucket object, e.g. to write data.
+    Returns:
+        boto3.resources.factory.s3.Bucket -- Bucket object.
+    """
     session = boto3.Session(
         aws_access_key_id=os.environ["BUCKET_ACCESS_KEY"],
         aws_secret_access_key=os.environ["BUCKET_SECRET_KEY"],
@@ -33,14 +28,25 @@ def get_bucket():
     return bucket
 
 
-def print_bucket_contents() -> None:
+def list_bucket_keys() -> List[Text]:
+    """Listing keys/filenames in bucket.
+    Returns:
+        List[Text] -- List of keys/filenames.
+    """
     bucket = get_bucket()
-    for obj in bucket.objects.all():
-        key = obj.key
-        print(f"key: {key}")
+    bucket_keys = [obj.key for obj in bucket.objects.all()]
+    return bucket_keys
 
 
-def write_to_s3(filename: Text, content: Text) -> None:
+def write_to_s3(filename: Text, content: Text) -> Text:
+    """Write data to 'BUCKET_FOLDER' within bucket.
+    Arguments:
+        filename {Text} -- Name of file to write to.
+        content {Text} -- Content of file (e.g. UTF-8 text).
+    Returns:
+        Text -- Path of file to which data was written.
+    """
     bucket = get_bucket()
-    key = BUCKET_FOLDER + filename
-    bucket.put_object(Bucket=BUCKET_NAME, Body=content, Key=key)
+    key = (BUCKET_FOLDER + filename).replace(" ", "+")
+    bucket.put_object(Bucket=os.environ["BUCKET_NAME"], Body=content, Key=key)
+    return key

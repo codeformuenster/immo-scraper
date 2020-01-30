@@ -16,6 +16,7 @@ URL = (
     "sort=newest"
 )
 
+
 def scrape() -> List[Dict]:
     """
     Scrapt nestoria API.
