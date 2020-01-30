@@ -38,7 +38,7 @@ def list_bucket_keys() -> List[Text]:
     return bucket_keys
 
 
-def write_to_s3(filename: Text, content: Text) -> Text:
+def write_to_bucket(filename: Text, content: Text) -> Text:
     """Write data to 'BUCKET_FOLDER' within bucket.
     Arguments:
         filename {Text} -- Name of file to write to.

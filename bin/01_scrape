@@ -6,7 +6,7 @@ import sys
 from datetime import datetime
 
 from immo_scraper import nestoria
-from immo_scraper.bucket import write_to_s3, list_bucket_keys
+from immo_scraper.bucket import write_to_bucket, list_bucket_keys
 
 # set up logging
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
@@ -22,7 +22,7 @@ log.info("Scraping done.")
 log.info("Writing to s3 bucket...")
 timestamp = str(datetime.utcnow()) + ".txt"
 nestoria_json = json.dumps(nestoria_result, indent=2)
-key = write_to_s3(filename=timestamp, content=nestoria_json)
+key = write_to_bucket(filename=timestamp, content=nestoria_json)
 log.info("Writing done.")
 
 # verify that writing was successful
