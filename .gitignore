@@ -3,6 +3,7 @@ bucket/
 
 # secrets
 secret/*
+*.env
 
 # python
 *.pyc

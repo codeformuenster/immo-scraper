@@ -1,6 +1,6 @@
 """ Utils to interact with s3 bucket. """
 
-import re
+import os
 from typing import Text
 
 import boto3
@@ -19,8 +19,8 @@ CREDENTIALS_PATH = "secret/bucket.txt"
 
 def get_bucket():
     """Connect to S3 bucket"""
-    ACCESS_KEY = "GOOGCUKVXASYVZCKAANOB4OR"
-    SECRET_KEY = open("secret/gs_secret_key.txt", "r").read()
+    ACCESS_KEY = os.environ["BUCKET_ACCESS_KEY"]
+    SECRET_KEY = os.environ["BUCKET_SECRET_KEY"]
 
     session = boto3.Session(
         aws_access_key_id=ACCESS_KEY,
@@ -36,13 +36,6 @@ def get_bucket():
 
     bucket = s3.Bucket("immo-scraper")
     return bucket
-
-
-def read_credentials() -> Text:
-    with open(CREDENTIALS_PATH, "r") as f:
-        secret_key = f.read()
-        secret_key_clean = re.sub("[^a-z0-9\\-]", "", secret_key)
-    return secret_key_clean
 
 
 def print_bucket_contents() -> None:
