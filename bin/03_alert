@@ -6,7 +6,7 @@ import pandas as pd
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
-from immo_scraper.paths import AGGREGATED_CSV, ALERTS_IDS
+from immo_scraper.io.paths import AGGREGATED_CSV, ALERTS_IDS
 
 # read aggregated data from bucket
 df_entries = pd.read_csv(str(AGGREGATED_CSV), dtype={"id": str})

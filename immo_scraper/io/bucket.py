@@ -6,10 +6,10 @@ from typing import Text, List
 import boto3
 from botocore.client import Config
 
-from immo_scraper.paths import BUCKET_FOLDER
+from immo_scraper.io.paths import BUCKET_FOLDER
 
 
-def get_bucket() -> boto3.resources.factory.s3.Bucket:
+def get_bucket():
     """Get bucket object, e.g. to write data.
     Returns:
         boto3.resources.factory.s3.Bucket -- Bucket object.
@@ -47,6 +47,6 @@ def write_to_bucket(filename: Text, content: Text) -> Text:
         Text -- Path of file to which data was written.
     """
     bucket = get_bucket()
-    key = (BUCKET_FOLDER + filename).replace(" ", "+")
+    key = BUCKET_FOLDER + filename
     bucket.put_object(Bucket=os.environ["BUCKET_NAME"], Body=content, Key=key)
-    return key
+    return key.replace(" ", "+")

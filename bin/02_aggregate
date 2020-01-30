@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from immo_scraper.paths import AGGREGATED_CSV, ALERTS_IDS, AGGREGATED_CSV
+from immo_scraper.io.paths import AGGREGATED_CSV, ALERTS_IDS, AGGREGATED_CSV
 
 # read raw data
 filenames = [str(key) for key in BUCKET_NESTORIA.glob("*")]
