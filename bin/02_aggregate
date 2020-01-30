@@ -6,7 +6,13 @@ from pathlib import Path
 
 import pandas as pd
 
-from immo_scraper.io.paths import AGGREGATED_CSV, ALERTS_IDS, AGGREGATED_CSV, DIR_RAW
+from immo_scraper.io.paths import (
+    AGGREGATED_CSV,
+    ALERTS_IDS,
+    AGGREGATED_CSV,
+    DIR_RAW,
+    DIR_PROCESSED,
+)
 from immo_scraper.io.bucket import download_raw_data_from_bucket
 
 # download raw data from bucket
@@ -23,7 +29,14 @@ for filename in filenames:
 
 # format data
 entries_dicts = list(itertools.chain(*filedata))
-df = pd.DataFrame(entries_dicts).drop_duplicates()  # filter out duplicates
+df = (
+    pd.DataFrame(entries_dicts)  # dicts to DataFrame
+    .drop(columns=["updated_in_days", "updated_in_days_formatted"])  # drop columns
+    .drop_duplicates()  # filter out duplicates
+)
+
+# drop irrelevant columns
+
 
 # ENGINEER FEATURES
 # id of entry
@@ -36,4 +49,7 @@ df["lat_long"] = df.apply(
 # TODO
 
 # write result to bucket
-df.to_csv(str(AGGREGATED_CSV))
+DIR_PROCESSED.mkdir(
+    parents=True, exist_ok=True
+)  # create target directory, if not exists
+df.to_csv(str(AGGREGATED_CSV), index=False)

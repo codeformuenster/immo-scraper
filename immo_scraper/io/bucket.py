@@ -55,6 +55,7 @@ def write_to_bucket(filename: Text, content: Text) -> Text:
 
 def download_raw_data_from_bucket():
     """Download scraped raw JSON data from bucket."""
+    DIR_RAW.mkdir(parents=True, exist_ok=True)  # create target directory, if not exists
     bucket = get_bucket()
     keys_bucket = [
         key

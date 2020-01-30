@@ -4,3 +4,7 @@ services:
     build: .
     command: python bin/01_scrape
     env_file: .env
+  alert:
+    build: .
+    command: python bin/02_aggregate && python bin/03_alert
+    env_file: .env
