@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="immo_scraper",
-    version="0.1.0",
+    version="0.2.0",
     # about
     license="MIT",
     url="https://github.com/codeformuenster/immo-scout",
