@@ -3,17 +3,18 @@ import logging
 import os
 import sys
 from pathlib import Path
+from typing import Text
 
 import pandas as pd
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
 
-from immo_scraper.io.paths import AGGREGATED_CSV, ALERTS_IDS
+from immo_scraper.alert import email
+from immo_scraper.alert.io import get_ids_previous_alerts, log_alert
+from immo_scraper.io import paths
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 # read aggregated data from bucket
-df_entries = pd.read_csv(str(AGGREGATED_CSV), dtype={"id": str})
+df_entries = pd.read_csv(str(paths.AGGREGATED_CSV), dtype={"id": str})
 
 # check for new entries that are relevant to search criteria
 df_relevant = (
@@ -23,35 +24,17 @@ df_relevant = (
     .query("latitude < 52")
 )
 
-# read log of historical alerts
-alerts_log = []
-if ALERTS_IDS.exists():
-    with open(str(ALERTS_IDS), "r") as f:
-        alerts_log = f.read().splitlines()
-
 # select entries for which alerts are due
+alerts_log = get_ids_previous_alerts()
 df_alert = df_relevant[~df_relevant.id.isin(alerts_log)]
 
-# send alerts
-for id in df_alert.id:
+# If alerts are due: send email, log IDs
+if len(df_alert) > 0:
     logging.info("Sending out alert...")
-    link = df_alert[df_alert.id == id].lister_url.values[0]
-    message = Mail(
-        from_email=os.environ["FROM_EMAIL"],
-        to_emails=os.environ["TO_EMAIL"],
-        subject="Immo-scraper: new relevant offer.",
-        html_content=f'Found new relevant <a href="{link}">offer</a>.',
-    )
-    try:
-        sg = SendGridAPIClient(os.environ["EMAIL_API_TOKEN"])
-        response = sg.send(message)
-        print(response.status_code)
-        print(response.body)
-        print(response.headers)
-    except Exception as e:
-        print(e.message)
-
-# if alert sent, log this
-for id in df_alert.id:
-    with open(str(ALERTS_IDS), "a") as f:
-        f.write(id + "\n")
+    msg_html = email.compose_html(df_alert)
+    email.send(msg_html)
+    # remember IDs for which alerted
+    for id in df_alert.id:
+        log_alert(id)
+else:
+    logging.info("No (new) alerts due.")
