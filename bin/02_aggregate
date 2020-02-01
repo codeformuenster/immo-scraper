@@ -2,6 +2,8 @@
 """ Aggregate previously scraped data. """
 import itertools
 import json
+import logging
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -15,6 +17,8 @@ from immo_scraper.io.paths import (
 )
 from immo_scraper.io.bucket import download_raw_data_from_bucket
 
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+
 # download raw data from bucket
 download_raw_data_from_bucket()
 
@@ -23,7 +27,7 @@ filenames = [str(key) for key in DIR_RAW.glob("*") if key.name != ".gitkeep"]
 
 filedata = []
 for filename in filenames:
-    print(f"Reading file {filename}...")
+    logging.debug(f"Reading file {filename}...")
     with open(filename, "r") as f:
         filedata.append(json.loads(f.read()))
 

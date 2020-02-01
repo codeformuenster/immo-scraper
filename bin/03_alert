@@ -1,5 +1,7 @@
 #!/usr/bin/env python
+import logging
 import os
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -7,6 +9,8 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
 from immo_scraper.io.paths import AGGREGATED_CSV, ALERTS_IDS
+
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 # read aggregated data from bucket
 df_entries = pd.read_csv(str(AGGREGATED_CSV), dtype={"id": str})
@@ -30,6 +34,7 @@ df_alert = df_relevant[~df_relevant.id.isin(alerts_log)]
 
 # send alerts
 for id in df_alert.id:
+    logging.info("Sending out alert...")
     link = df_alert[df_alert.id == id].lister_url.values[0]
     message = Mail(
         from_email=os.environ["FROM_EMAIL"],

@@ -23,7 +23,6 @@ log.info("Writing to s3 bucket...")
 timestamp = str(datetime.utcnow()) + ".txt"
 nestoria_json = json.dumps(nestoria_result, indent=2)
 key = write_to_bucket(filename=timestamp, content=nestoria_json)
-log.info("Writing done.")
-
 # verify that writing was successful
 assert key in list_bucket_keys(), "Key not found in bucket, after attempting to write."
+log.info("Writing done.")

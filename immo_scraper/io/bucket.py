@@ -1,6 +1,7 @@
 """ Utils to interact with s3 bucket. """
 
 import os
+import logging
 from typing import Text, List
 
 import boto3
@@ -69,6 +70,8 @@ def download_raw_data_from_bucket():
     keys_download = [key for key in keys_bucket if Path(key).name not in files_local]
     # download files
     for key in keys_download:
-        print(f"Downloading from bucket: {key}")
+        logging.info(f"Downloading from bucket: {key}")
         filename = str(DIR_RAW / Path(key).name)
         bucket.download_file(key, filename)
+    if not keys_download:
+        logging.info("Local raw data was up to date.")
