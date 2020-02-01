@@ -27,11 +27,11 @@ df_alert = df_relevant[~df_relevant.id.isin(alerts_log)]
 
 # If alerts are due: send email, log IDs
 if len(df_alert) > 0:
-    logging.info("Sending out alert...")
+    logging.info("New alerts are due.")
     msg_html = email.compose_html(df_alert)
     email.send(msg_html)
     # remember IDs for which alerted
     for id in df_alert.id:
         log_alert(id)
 else:
-    logging.info("No (new) alerts due.")
+    logging.info("No alerts due.")
