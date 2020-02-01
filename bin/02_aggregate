@@ -39,9 +39,6 @@ df = (
     .drop_duplicates()  # filter out duplicates
 )
 
-# drop irrelevant columns
-
-
 # ENGINEER FEATURES
 # id of entry
 df["id"] = df.apply(lambda row: row.lister_url.split("/")[4], axis=1)
