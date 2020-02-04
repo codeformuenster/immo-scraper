@@ -5,6 +5,7 @@ data/
 # secrets
 secret/*
 *.env
+*.json5
 
 # python
 *.pyc

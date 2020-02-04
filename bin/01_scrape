@@ -8,21 +8,18 @@ from datetime import datetime
 from immo_scraper.scraper import nestoria
 from immo_scraper.bucket import write_to_bucket, list_bucket_keys
 
-# set up logging
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-log = logging.getLogger("info_logger")
-log.setLevel(logging.INFO)
 
 # scrape
-log.info("Scraping...")
+logging.info("Scraping...")
 nestoria_result = nestoria.scrape()
-log.info("Scraping done.")
+logging.info("Scraping done.")
 
 # save to S3 bucket
-log.info("Writing to s3 bucket...")
+logging.info("Writing to s3 bucket...")
 timestamp = str(datetime.utcnow()) + ".txt"
 nestoria_json = json.dumps(nestoria_result, indent=2)
 key = write_to_bucket(filename=timestamp, content=nestoria_json)
 # verify that writing was successful
 assert key in list_bucket_keys(), "Key not found in bucket, after attempting to write."
-log.info("Writing done.")
+logging.info("Writing done.")
