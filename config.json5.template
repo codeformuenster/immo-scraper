@@ -1,0 +1,15 @@
+{
+    // s3 bucket
+    bucket: {
+        name: "TODO",
+        secret_key: "TODO",
+        access_key: "TODO",
+        region_name: "US-CENTRAL1",
+    },
+    // email alerts
+    email: {
+        from: "TODO",
+        to: "TODO",
+        token: "TODO"
+    }
+}
