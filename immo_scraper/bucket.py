@@ -8,7 +8,10 @@ import boto3
 from botocore.client import Config
 from pathlib import Path
 
+from immo_scraper import config
 from immo_scraper.paths import BUCKET_RAW_DIR, DIR_RAW
+
+CONFIG = config.read_config()
 
 
 def get_bucket():
@@ -17,16 +20,16 @@ def get_bucket():
         boto3.resources.factory.s3.Bucket -- Bucket object.
     """
     session = boto3.Session(
-        aws_access_key_id=os.environ["BUCKET_ACCESS_KEY"],
-        aws_secret_access_key=os.environ["BUCKET_SECRET_KEY"],
-        region_name=os.environ["BUCKET_REGION_NAME"],
+        aws_access_key_id=CONFIG["bucket"]["access_key"],
+        aws_secret_access_key=CONFIG["bucket"]["secret_key"],
+        region_name=CONFIG["bucket"]["region_name"],
     )
     s3 = session.resource(
         "s3",
         endpoint_url="https://storage.googleapis.com",
         config=Config(signature_version="s3v4"),
     )
-    bucket = s3.Bucket(os.environ["BUCKET_NAME"])
+    bucket = s3.Bucket(CONFIG["bucket"]["name"])
     return bucket
 
 
@@ -50,7 +53,7 @@ def write_to_bucket(filename: Text, content: Text) -> Text:
     """
     bucket = get_bucket()
     key = BUCKET_RAW_DIR + filename
-    bucket.put_object(Bucket=os.environ["BUCKET_NAME"], Body=content, Key=key)
+    bucket.put_object(Bucket=CONFIG["bucket"]["name"], Body=content, Key=key)
     return key.replace("+", " ")
 
 

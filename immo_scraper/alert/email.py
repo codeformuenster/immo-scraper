@@ -1,11 +1,14 @@
 import logging
-import os
 from typing import Text
 
 import pandas as pd
 
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+
+from immo_scraper import config
+
+CONFIG = config.read_config()
 
 
 def compose_html(df_alerts: pd.DataFrame) -> Text:
@@ -21,13 +24,13 @@ def compose_html(df_alerts: pd.DataFrame) -> Text:
 def send(text: Text):
     logging.info("Sending email...")
     message = Mail(
-        from_email=os.environ["FROM_EMAIL"],
-        to_emails=os.environ["TO_EMAIL"],
+        from_email=CONFIG["email"]["from"],
+        to_emails=CONFIG["email"]["to"],
         subject="Immo-scraper: new relevant offer(s).",
         html_content=text,
     )
     try:
-        sg = SendGridAPIClient(os.environ["EMAIL_API_TOKEN"])
+        sg = SendGridAPIClient(CONFIG["email"]["token"])
         response = sg.send(message)
         logging.debug(response.status_code)
         logging.debug(response.body)
