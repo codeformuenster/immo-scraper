@@ -6,12 +6,12 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # python dependencies
-WORKDIR /usr/src/app
-COPY ./setup.py /usr/src/app
-COPY ./requirements.txt /usr/src/app
+WORKDIR /app
+COPY ./setup.py /app
+COPY ./requirements.txt /app
 RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 # project source
-COPY bin /usr/src/app/bin
-COPY immo_scraper /usr/src/app/immo_scraper
+COPY bin /app/bin
+COPY immo_scraper /app/immo_scraper
