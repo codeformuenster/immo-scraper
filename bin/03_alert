@@ -6,7 +6,7 @@ import pandas as pd
 
 from immo_scraper.alert import email
 from immo_scraper.alert.io import get_ids_previous_alerts, log_alert
-from immo_scraper.io import paths
+from immo_scraper import paths
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 

@@ -2,7 +2,7 @@
 
 from typing import Text
 
-from immo_scraper.io import paths
+from immo_scraper import paths
 
 
 def get_ids_previous_alerts() -> Text:
