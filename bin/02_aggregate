@@ -7,14 +7,14 @@ import sys
 
 import pandas as pd
 
-from immo_scraper.io.paths import (
+from immo_scraper.paths import (
     AGGREGATED_CSV,
     ALERTS_IDS,
     AGGREGATED_CSV,
     DIR_RAW,
     DIR_PROCESSED,
 )
-from immo_scraper.io.bucket import download_raw_data_from_bucket
+from immo_scraper.bucket import download_raw_data_from_bucket
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 

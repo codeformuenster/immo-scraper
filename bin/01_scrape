@@ -6,7 +6,7 @@ import sys
 from datetime import datetime
 
 from immo_scraper.scraper import nestoria
-from immo_scraper.io.bucket import write_to_bucket, list_bucket_keys
+from immo_scraper.bucket import write_to_bucket, list_bucket_keys
 
 # set up logging
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)

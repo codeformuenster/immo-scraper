@@ -8,7 +8,7 @@ import boto3
 from botocore.client import Config
 from pathlib import Path
 
-from immo_scraper.io.paths import BUCKET_RAW_DIR, DIR_RAW
+from immo_scraper.paths import BUCKET_RAW_DIR, DIR_RAW
 
 
 def get_bucket():
